@@ -17,40 +17,56 @@ Node* newNode(int data) {
 
 // Fonction pour ajouter un nœud en haut de la pile a
 void pushA(Node** topA, int data) {
-    Node* node = newNode(data);
+    Node* node = malloc(sizeof(node));
+    node->data = data;
     node->next = *topA;
     *topA = node;
 }
 
 // Fonction pour ajouter un nœud en haut de la pile b
+// la liste chainée n'est pas directement passée en argument. A la place,
+// la liste est passée ds la fonction comme un pointeur référence du pointeur topB
+// The traditional method to allow a function to change its caller's memory is to
+// pass a pointer to the caller's memory instead of a copy
+// in this case, the value we want to
+// change is struct node*, so we pass a struct node** instead. The two stars
+// (**) are a little scary, but really it's just a straight application of the rule. It just happens
+// that the value we want to change already has one star (*), so the parameter to change it
+// has two (**). Or put another way: the type of the head pointer is "pointer to a struct
+// node." In order to change that pointer, we need to pass a pointer to it, which will be a
+// "pointer to a pointer to a struct node".
 void pushB(Node** topB, int data) {
-    Node* node = newNode(data);
-    node->next = *topB;
-    *topB = node;
+    struct Node* newNode;
+    newNode = malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = *topB; // on dereference pour accéder et changer la valeur d'intérêt
+    *topB = newNode; // on assigne le nouveau noeud au haut de la pile
 }
 
 // Fonction pour supprimer le nœud en haut de la pile a
-void popA(Node** topA) {
+void popA_top(Node** topA) {
     if (*topA == NULL) {
         return;
     }
-    Node* temp = *topA;
-    *topA = (*topA)->next;
+    struct node* temp = malloc(sizeof(Node));
+    temp = *topA;
+    *topA = topA->next;
     free(temp);
 }
 
 // Fonction pour supprimer le nœud en haut de la pile b
-void popB(Node** topB) {
+void popB_top(Node** topB) {
     if (*topB == NULL) {
         return;
     }
-    Node* temp = *topB;
+    struct Node* temp = malloc(sizeof(Node));
+    temp = *topB;
     *topB = (*topB)->next;
     free(temp);
 }
 
 // Fonction pour supprimer le dernier élément de la pile A
-void popA(Node** topA) {
+void popA_tail(Node** topA) {
     if (*topA == NULL) {
         return;
     }
@@ -59,7 +75,8 @@ void popA(Node** topA) {
         *topA = NULL;
         return;
     }
-    Node* temp = *topA;
+    struct Node* temp = malloc(sizeof(Node));
+    temp = *topA;
     while (temp->next->next != NULL) {
         temp = temp->next;
     }
@@ -68,7 +85,7 @@ void popA(Node** topA) {
 }
 
 // Fonction pour supprimer le dernier élément de la pile B
-void popB(Node** topB) {
+void popB_tail(Node** topB) {
     if (*topB == NULL) {
         return;
     }
@@ -77,7 +94,8 @@ void popB(Node** topB) {
         *topB = NULL;
         return;
     }
-    Node* temp = *topB;
+    struct Node* temp = malloc(sizeof(Node));
+    temp = *topB;
     while (temp->next->next != NULL) {
         temp = temp->next;
     }
