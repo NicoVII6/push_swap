@@ -1,41 +1,34 @@
-#ifndef PUSH_SWAP_STRUCT_H
-# define PUSH_SWAP_STRUCT_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/28 15:29:04 by ndecotti          #+#    #+#             */
+/*   Updated: 2023/03/05 17:33:04 by ndecotti         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-typedef struct s_dlist
-{
-	// long			content;
-	int				data;
-	struct s_dlist	*next;
-	struct s_dlist	*prev;
-}	t_dlist;
+#include <unistd.h>
+#include <stdlib.h>
 
-typedef struct s_lists
-{
-	t_dlist	*a;
-	t_dlist	*b;
-	size_t	count;
-}	t_lists;
+#define INT_SIZE (sizeof(int) * CHAR_BIT)
+#define INT_MAX ((1 << (INT_SIZE - 1)) - 1)
+#define INT_MIN (-INT_MAX - 1)
 
-#endif
+/* In this code, INT_SIZE is the number of bits in an int data type. 
+CHAR_BIT is a constant that represents the number of bits in a char data type (usually 8),
+so sizeof(int) * CHAR_BIT calculates the number of bits in an int.
 
-/* La première structure est appelée t_dlist. C'est une structure de liste doublement chaînée qui est utilisée pour stocker des éléments de données.
-Cette structure a trois membres :
-content est le contenu de la liste, ici stocké sous la forme d'un entier long.
-next est un pointeur vers le prochain élément de la liste.
-prev est un pointeur vers l'élément précédent de la liste.
+INT_MAX is defined as (1 << (INT_SIZE - 1)) - 1.
+This expression shifts the binary value 1 to the left by INT_SIZE - 1 bits,
+which sets the leftmost bit to 1 and all other bits to 0. Then, the expression
+subtracts 1 to set all the bits except the leftmost bit to 1,
+resulting in the maximum possible value for a signed integer.
 
-cette structure permet de parcourir la liste dans les deux sens (en avant et en arrière)
+INT_MIN is defined as -INT_MAX - 1. This expression negates INT_MAX and subtracts 1,
+resulting in the minimum possible value for a signed integer. */
 
-La seconde structure est appelée t_lists. Elle utilise la structure t_dlist pour définir deux listes distinctes, notées a et b. 
-a est un pointeur vers la première liste, qui contient les éléments à trier.
-b est un pointeur vers la seconde liste, qui est initialement vide 
-(sera utilisée comme zone de travail pour trier les éléments de la liste a.)
-count est un entier qui représente le nombre total d'éléments dans les deux listes.
-
-En utilisant les deux listes distinctes, ce programme implémente une variante de l'algorithme de tri "merge sort" (tri de fusion)
-qui utilise des opérations de "push" et "swap" pour trier les éléments dans les deux listes.
-
-Enfin, les lignes #ifndef PUSH_SWAP_STRUCT_H et # define PUSH_SWAP_STRUCT_H sont des instructions
-qui permettent de s'assurer que ces structures ne sont définies qu'une seule fois
-même si elles sont utilisées dans plusieurs fichiers source différents.
-*/
+#define TRUE 1
+#define FALSE 0

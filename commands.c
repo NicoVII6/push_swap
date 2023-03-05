@@ -5,170 +5,134 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/12 11:19:41 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/02/17 17:53:38 by ndecotti         ###   ########.fr       */
+/*   Created: 2023/03/05 17:11:35 by ndecotti          #+#    #+#             */
+/*   Updated: 2023/03/05 17:33:18 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// structure de notre liste chainee, avec pour chaque element, deux blocs :
-// un integer et un pointeur vers le noeud suivant
-typedef struct Node {
-	int	value;
-	struct	Node *next;
-} t_Node;
+// A Retravailler et ameliorer pour que ca fit avec les autres fonctions
+// ici on utilise a fixed sized array stack memory instead of dynamic memory allocation
+// EST CE QUE CETTE METHODE EST AUTORISEE ??
 
-// structure intermediaire qui nous permets de faire les manipulations avec les commandes
+#include "push_swap.h"
+
+#define STACK_SIZE 10000
+
 typedef struct stack {
-	Node *top
-} t_stack;
+	int	top;
+	int	items[STACK_SIZE];
+} stack;
 
-// on alloue memoire et on initialise valeur du premier Node de la stack a NULL
-stack	*init_stack(void){
-	stack	*s = malloc(sizeof(stack));
-	s ->top = NULL;
-	return s;
+// intialize a new stack
+void	initialize_stack(stack *s)
+{
+	s->top = -1;
 }
 
-int	is_empty(stack *s) {
-	return s->top == NULL;
+int		is_empty(stack *s)
+{
+	return s->top = -1;
 }
 
-// la fonction prends en parametre un pointeur vers la structure stack et une valeur
-// on ajoute un nouveau noeud a la pile en faisant un malloc
-// on assigne a ce pointeur, le bloc value
-// on met a jour le pointeur next pour qu'il pointe en haut de la liste,
-// ensuite on met a jour le pointeur top pour qu'il pointe vers le nouveau noeud créé
-void	push(stack *s, int value) {
-	Node	*n = malloc(sizeof(Node));
-	n->value = value;
-	n->next = s->top;
-	s->top = n;
+int		is_full(stack *s)
+{
+	return s->top = STACK_SIZE -1;
 }
 
-// la fonction pop recupere le pointeur top de la pile stack et sauvegarde la valeur
-// de l'element pointe ds la variable value et met a jour le pointeur top de la pile stack 
-// pour qu'il pointe vers l'element suivant
-// la fonction pop retire l'element situee au sommet de la pile stack en liberant
-// la memoire occupee par l'element retiré
-int	pop(stack *s) {
-	if (is_empty(s) == NULL)
-		return 0;
-	Node	*n = s->top;
-	int value = n->value;
-	s->top = n->next;
-	free(n);
-	return value;
-}
-
-// controle si les deux premieres valeurs de la stack A existent, et
-// ensuite les permute
-void	swap_a(stack *a) {
-	if (a->top == NULL || a->top->next == NULL) {
-		return;
+// Push an item onto the stack
+void	push(stack *s, int data)
+{
+	if (is_full(s))
+	{
+		printf("Error\n"); // sur la sortie d'erreur
+		exit(1);
 	}
-	int	temp = a->top->value;
-	a->top->value = a->top->next->value;
-	a->top->next->value = temp;
+	s->top++;
+	s->items[s->top] = data;
 }
 
+// Pop an item from the stack
+int		pop(stack *s)
+{
+	if (is_empty(s))
+	{
+		printf("Error\n");
+		exit(1);
+	}
+	int	data = s->items[s->top];
+	s->top--;
+	return data;
+}
 
-void	swap_b(stack *b) {
-	if (b->top == NULL || b->top->next == NULL)
+// function to swap the two top elements of the stack
+// stay with this form, if not working, do 2 different for stack a and b
+void	swap(stack *s)
+{
+	if (s->top < 1) // ?
 		return;
-	int	temp = b->top->value;
-	b->top->value = b->top->next->value;
-	b->top->next->value = temp;
+	int	temp = s->items[s->top];
+	s->items[s->top] = s->items[s->top-1]; // top-1 = 2e element
+	s->items[s->top-1] = temp;
 }
 
-void	swap_a_b(stack *a, stack *b) {
-	swap_a(a);
-	swap_b(b);
+// Function to move the top element from stack a to stack b
+void	push_b(stack *a, stack *b)
+{
+	if (is_empty(a))
+	{
+		printf("Error\n");
+		exit(1);
+	}
+	int	data;
+
+	data = pop(a);
+	push(b, data);
+} // TROUVER ENDROIT OU METTRE LE PRINT DE LA COMMANDE EXECUTEE
+
+void	push_a(stack *b, stack *a)
+{
+	if (is_empty(b))
+	{
+		printf("Error\n");
+		exit(1);
+	}
+	int	data;
+
+	data = pop(b);
+	push(a, data);
 }
 
-// la fonction consiste a retirer l'element se trouvant au sommet de la pile b et a le
-// placer sur la pile a
-// la fonction verifie d'abord que la pile b n'est pas vide
-// si pile b contient au moins un element, la fonction execute pop de b pour retirer l'element
-// du sommet de la pile, l'ayant stocke au prealable dans la variable value
-// ensuite elle appelle fonction push en prenant en argument la pile a et la value stockée de b
-// pour l'ajouter au sommet de la pile a
-void	push_a(stack *a, stack *b) {
-	if (b->top == NULL)
-		return ;
-	push(a, pop(b));
-}
-
-void	push_b(stack *a, stack *b) {
-	if (a->top == NULL)
-		return ;
-	push(b, pop(a));
-}
-
-// on checke si la pile A contient un top et un avant premier
-// on cree un pointeur n qui pointe sur le premier element de la stack
-// ensuite tant que l'on arrive pas a l'avant dernier noeud, la boucle while s'execute
-// une fois sorti de la boucle, on stocke un pointeur vers le dernier noeud de la pile dans variable last
-// on free ce noeud et on met a jour le pointeur top pour qu'il pointe vers ce dernier noeud, qui devient
-// ainsi le nouveau premier noeud de la pile
-void	reverse_rotate_a(stack *a) {
-	if (a->top == NULL || a->top->next == NULL)
-		return;
-	Node	*temp = a->top;
-	while (temp->next->next != NULL)
-		temp = temp->next;
-	Node	*last = temp->next;
-	temp->next = NULL;
-	a->top = last;
-}
-
-void	reverse_rotate_b(stack *b) {
-	if(b->top == NULL || b->top->next == NULL)
-		return;
-	Node	*temp = b->top;
-	while (temp->next->next != NULL)
-		temp = temp->next;
-	Node	*last = temp->next;
-	temp->next = NULL;
-	b->top = last;
-}
-
-void	reverse_rotate_both(stack *a, stack *b) {
-	reverse_rotate_a(a);
-	reverse_rotate_b(b);
-}
-
-// on checke si la pile A contient un top et un deuxieme element
-// on cree ensuite un pointeur temp qui pointe sur le premier element de la stack
-// ensuite une boucle while s'execute dans la stack jusqu'a ce qu'on atteigne le dernier noeud
-// une fois atteint, on fait pointer ce dernier noeud sur le premier de la stack
-// on fait met a jour le pointeur top pour qu'il pointe sur le deuxieme element
-// on assigne la valeur NULL au pointeur qui etait le premier noeud
+// top number goes to bottom
 void	rotate_a(stack *a)
 {
-	if (a->top == NULL || a->top->next == NULL)
+	if (a->top < 1) // ??
 		return;
-	Node	*temp = a->top;
-	while (temp->next != NULL)
-		temp = temp->next;
-	temp->next = a->top;
-	a->top = a->top->next;
-	a->top = NULL;
+	int	temp;
+	int	i;
+
+	temp = a->items[a->top];
+	i = a->top;
+	while (i > 0)
+	{
+		a->items[i] = a->items[i-1];
+		i--;
+	}
+	a->items[0] = temp;
 }
 
 void	rotate_b(stack *b)
 {
-	if (b->top == NULL || b->top->next == NULL)
+	if (b->top < 1)
 		return;
-	Node	*temp = b->top;
-	while (temp->next != NULL)
-		temp = temp->next;
-	temp->next = b->top;
-	b->top = b->top->next;
-	b->top = NULL;
-}
+	int	temp;
+	int	i;
 
-void	rotate_both(stack *a, stack *b)
-{
-	rotate_a(a);
-	rotate_b(b);
+	temp = b->items[b->top];
+	i = b->top;
+	while (i > 0)
+	{
+		b->items[i] = b->items[i-1];
+		i--;
+	}
+	b->items[0] = temp;
 }
