@@ -6,7 +6,7 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 14:28:52 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/03/05 17:33:25 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/03/08 18:35:08 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,27 +73,45 @@ int	get_max_value(int arr[], int size)
 	return max;
 }
 
-// a retravailler, faire a l'aide d'une recursion
-int		binary_base(int arr[index], int n)
+// the function returns a double pointer because it returns a pointer to an array (binary_arr)
+// which itself points to the decimal array[];
+int		**decimal_to_binary(int arr[], int len)
 {
 	int	i;
-	int	binary_ind;
-	int	base;
+	int	index;
+	int	decimal;
+	int	**binary_arr = malloc(sizeof(int*) * len); // to store len pointer to integers to arr[]
 
 	i = 0;
-	binary_ind = 0;
-	base = 1;
-	while (i <= n)
+	index = 0;
+	decimal = i;
+	while (i < len)
 	{
-		while (index > 0)
+		binary_arr[i] = malloc(sizeof(int) * 32); // to store 32-bit binary integers
+		while (decimal > 0)
 		{
-			binary_ind += (index % 2) * base;
-			index /= 2;
-			base *= 10;
+			binary_arr[i][index] = decimal % 2;
+			decimal = decimal / 2;
+			index++;
 		}
-		printf("%d", binary_ind);
+		i++;
 	}
-	printf("\n");
+	// Reverse the order of the bits in binary_arr[i] to display the binary value correctly
+	int	start;
+	int	end;
+	int	temp;
+
+	start = 0;
+	end = index - 1;
+	while (start < end)
+	{
+		temp = binary_arr[i][start];
+		binary_arr[i][start] = binary_arr[i][end];
+		binary_arr[i][end] = temp;
+		start++;
+		end--;
+	}
+	return binary_arr;
 }
 
 /* la fonction duplique la string src vers une string dst nouvellement créée et retourne

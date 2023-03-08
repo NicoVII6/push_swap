@@ -6,11 +6,29 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 17:16:49 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/03/05 17:33:32 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/03/08 17:38:48 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PUSH_SWAP.H"
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t len)
+{
+	size_t	i;
+
+	if (len == 0)
+		return (ft_strlen(src));
+	i = 0;
+	while (i < (len - 1) && src[i] != '\0')
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	while (src[i] != '\0')
+		i++;
+	return (i);
+}
 
 // A adapter pour str reçus en arguments
 static int	count_words(const char *s, char c)
