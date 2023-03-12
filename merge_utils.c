@@ -6,20 +6,24 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 17:19:07 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/03/08 17:39:14 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/03/12 19:11:26 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PUSH_SWAP.H"
-#include <stdio.h> // juste pour tester !!
 
-#define MAX_INPUT_SIZE 10000
+// mettre un pointeur sur la sorted array
+// distribuer les index de la sorted_array sur l'array originale
+// en utilisant la fonction get_min_value (utils3)
+// commencer la distribution en cherchant la valeur la plus petite
+// lui attribuer le nouvel index et changer cette valeur en long_max
+// refaire la meme operation pour l'index suivant et une fois l'attribution
+// faite, attribuer la longueur long_max - 1. continuer l'operation
+// jusqu'a ce que toutes les valeurs soient indexees
 
-// reflechir au type de la fonction ?? void parait bizarre puisqu'on a besoin de retourner
-// un pointeur sur l'array triee
-// Attention, il faut veiller a garder un pointeur sur l'array avant tri
-// Utiliser un pointeur de pointeur ??
-int		merge_recursive(int arr[], int low, int high)
+// RETRAVAILLER LES FONCTIONS MERGE SORT, MERGE_RECURSIVE, GET_MIN_VALUE
+// ET INDEX_ASSOCIATION POUR QUE LE PROCESS FONCTIONNE
+long int		merge_recursive(t_stack *s, int low, int high)
 {
 	int	mid;
 
@@ -33,23 +37,23 @@ int		merge_recursive(int arr[], int low, int high)
 	// merge the sub-arrays
 	merge_sort(arr, low, mid, high);
 }
-
-int		merge_sort(int arr[], int low, int mid, int high)
+// function returns a pointer to the sorted array
+long int		*merge_sort(long int arr[], int low, int mid, int high)
 {
-	int	left_size;
+	long int	left_size;
 	int	right_size;
 	int	i;
 	int	j;
 	int	k;
-	int	*temp_left;
-	int	*temp_right;
-	int	*sorted_arr;
+	long int	*temp_left;
+	long int	*temp_right;
+	long int	*sorted_arr;
 
 	left_size = mid - low + 1;
 	right_size = high - mid;
-	temp_left = malloc(sizeof(int) * left_size);
-	temp_right = malloc(sizeof(int) * right_size);
-	sorted_arr = malloc((left_size + right_size) * sizeof(int));
+	temp_left = malloc(sizeof(long int) * left_size);
+	temp_right = malloc(sizeof(long int) * right_size);
+	sorted_arr = malloc((left_size + right_size) * sizeof(long int));
 	// copy data into temp left array
 	i = 0;
 	while (i < left_size)

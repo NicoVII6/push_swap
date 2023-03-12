@@ -6,18 +6,19 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 14:28:52 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/03/08 18:35:08 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/03/12 19:10:59 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-// adapter et changer argument de la fonction
-int	ft_atoi(const char *str)
+// utiliser long int pour ensuite comparer ac int min et int max
+// verifier que le tableau ait bien ete converti en long int partout
+long int	ft_atoi(const char *str)
 {
 	int	i;
-	int	nb;
 	int	sign;
+	long int	nb;
 
 	i = 0;
 	nb = 0;
@@ -37,12 +38,18 @@ int	ft_atoi(const char *str)
 		nb = nb * 10 + (str[i] - '0');
 		i++;
 	}
-	return (nb * sign);
+	if (nb < INT_MIN || nb > INT_MAX)
+	{
+		ft_putstr_fd("Error\n", 2);
+		exit (1);
+	}
+	else
+		return (nb * sign);
 }
 
 // get the digit in the specified place value
 // compter le nombre de digits d'un nombre
-int	get_number_digits(int value)
+int	get_number_digits(long int value)
 {
 	int	digits = 0;
 	while (value > 0)
@@ -53,15 +60,18 @@ int	get_number_digits(int value)
 	return digits;
 }
 
-int	get_max_value(int arr[], int size)
+long int	get_max_value(long int arr[], int size)
 {
-	int	max;
+	long int	max;
 	int	i;
 
 	if (size <= 0)
-		return ; // any appropriate value indicating an error
+	{
+		ft_putstr_fd("Error\n", 2);
+		exit (1);
+	}
 	max = arr[0];
-	i = 1;
+	i = 1; // index pour la 1ere comparaison ac index 0
 	while (i < size)
 	{
 		if (arr[i] > max)
@@ -75,19 +85,19 @@ int	get_max_value(int arr[], int size)
 
 // the function returns a double pointer because it returns a pointer to an array (binary_arr)
 // which itself points to the decimal array[];
-int		**decimal_to_binary(int arr[], int len)
+long int		**decimal_to_binary(long int arr[], int len)
 {
 	int	i;
 	int	index;
-	int	decimal;
-	int	**binary_arr = malloc(sizeof(int*) * len); // to store len pointer to integers to arr[]
+	long int	decimal;
+	long int	**binary_arr = malloc(sizeof(long int *) * len); // to store len pointer to integers to the arr[]
 
 	i = 0;
 	index = 0;
 	decimal = i;
 	while (i < len)
 	{
-		binary_arr[i] = malloc(sizeof(int) * 32); // to store 32-bit binary integers
+		binary_arr[i] = malloc(sizeof(long int));
 		while (decimal > 0)
 		{
 			binary_arr[i][index] = decimal % 2;
@@ -99,7 +109,7 @@ int		**decimal_to_binary(int arr[], int len)
 	// Reverse the order of the bits in binary_arr[i] to display the binary value correctly
 	int	start;
 	int	end;
-	int	temp;
+	long int	temp;
 
 	start = 0;
 	end = index - 1;

@@ -6,65 +6,70 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 17:11:35 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/03/08 18:35:07 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/03/12 19:12:39 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // A Retravailler et ameliorer pour que ca fit avec les autres fonctions
-// ici on utilise a fixed sized array stack memory instead of dynamic memory allocation
-// EST CE QUE CETTE METHODE EST AUTORISEE ??
+// changer les int en long int
 
 #include "push_swap.h"
 
-#define STACK_SIZE 10000
-
-typedef struct stack {
-	int	top;
-	int	items[STACK_SIZE];
-} stack;
-/* think about the memory allocation all around the project, 2 solutions : the stack_size way
- * or the dynamic allocation */
-
 // intialize a new stack
-void	initialize_stack(stack *s)
+void	initialize_stack(t_stack *s, int size)
 {
-	s->top = -1;
+	s->top = -1; // indicates an empty stack
+	s->size = size;
+	s->items = malloc(sizeof(int) * size);
 }
 
 // check if stack is empty
-int		is_empty(stack *s)
+int		is_empty(t_stack *s)
 {
 	return s->top = -1;
 }
 
 // check if stack is full
-int		is_full(stack *s)
+int		is_full(t_stack *s)
 {
-	return s->top = STACK_SIZE -1;
+	return s->top = s->size -1;
 }
 
 // Push an item onto the stack
-void	push(stack *s, int data)
+// takes a pointer to the stack and the value to be pushed as arguments
+// if the stack is not full, it allocates memory for a new item
+// and stores the new value in the pointee of the new_item
+// then it updates the top index of the stack to point to the new_item
+void	push(t_stack *s, int data)
 {
 	if (is_full(s))
 	{
-		printf("Error\n"); // sur la sortie d'erreur
-		exit(1);
+		ft_putstr_fd("Error\n", 2);
+		return 1;
 	}
-	s->top++; // enough to "create" the new top item where to add the value
-	s->items[s->top] = data; // add the value into the top
+	int	*new_item = malloc(sizeof(int));
+	*new_item = data;
+	s->top++;
+	s->items[s->top] = new_item;
 }
 
 // Pop and delete an item from the stack
-int		pop(stack *s)
+// if stack not empty, we get a pointer to the top item of the stack,
+// stores the value of the item in a variable data, decrements the top index
+// free the memory allocated for the pop_item and returns the value of the pop
+// item to the caller
+int		pop(t_stack *s)
 {
 	if (is_empty(s))
 	{
-		printf("Error\n");
-		exit(1);
+		ft_putstr_fd("Error\n", 2);
+		return 1;
 	}
-	int	data = s->items[s->top];
-	s->top--; // enough to "delete". at least to actualize the stack after the move 
+	int	data;
+	int	*pop_item = s->items[s->top];
+	data = *pop_item;
+	s->top--;
+	free(pop_item);
 	return data;
 }
 
@@ -72,12 +77,12 @@ int		pop(stack *s)
 // use the combination of pop and push functions
 // for pb, we make pop a, then push b
 // for pa, we make pop b, then push a
-void	push_b(stack *a, stack *b)
+void	push_b(t_stack *a, t_stack *b)
 {
 	if (is_empty(a))
 	{
-		printf("Error\n");
-		exit(1);
+		ft_putstr_fd("Error\n", 2);
+		exit (1);
 	}
 	int	data;
 
@@ -87,12 +92,12 @@ void	push_b(stack *a, stack *b)
 }
 
 // move the top element from stack b to the top of stack a
-void	push_a(stack *b, stack *a)
+void	push_a(t_stack *b, t_stack *a)
 {
 	if (is_empty(b))
 	{
-		printf("Error\n");
-		exit(1);
+		ft_putstr_fd("Error\n", 2);;
+		exit (1);
 	}
 	int	data;
 
@@ -102,20 +107,26 @@ void	push_a(stack *b, stack *a)
 }
 
 // function to swap the two top elements of the stack
-void	swap_a(stack *a)
+void	swap_a(t_stack *a)
 {
 	if (a->top < 1) // check if the is at least 2 values in the stack
-		return;
+	{
+		ft_putstr_fd("Error\n", 2);
+		exit (1);
+	}
 	write(1, "sa\n", 3);
 	int	temp = a->items[a->top];
 	a->items[a->top] = a->items[a->top-1]; // top-1 = 2e element
 	a->items[a->top-1] = temp;
 }
 
-void	swap_b(stack *b)
+void	swap_b(t_stack *b)
 {
 	if (b->top < 1)
-		return;
+	{
+		ft_putstr_fd("Error\n", 2);
+		exit (1);
+	}
 	write(1, "sb\n", 3);
 	int	temp = b->items[b->top];
 	b->items[b->top] = b->items[b->top-1];
@@ -123,10 +134,13 @@ void	swap_b(stack *b)
 }
 
 // top number goes to bottom
-void	rotate_a(stack *a)
+void	rotate_a(t_stack *a)
 {
 	if (a->top < 1)
-		return;
+	{
+		ft_putstr_fd("Error\n", 2);
+		exit (1);
+	}
 	int	temp;
 	int	i;
 
@@ -141,10 +155,13 @@ void	rotate_a(stack *a)
 	a->items[0] = temp; // remplace derniere valeur par 1ere valeur du top de la stack
 }
 // Top to bottom
-void	rotate_b(stack *b)
+void	rotate_b(t_stack *b)
 {
 	if (b->top < 1)
-		return;
+	{
+		ft_putstr_fd("Error\n", 2);
+		exit (1);
+	}
 	int	temp;
 	int	i;
 
@@ -159,10 +176,13 @@ void	rotate_b(stack *b)
 	b->items[0] = temp;
 }
 // Bottom to top
-void	rev_rotate_a(stack *a)
+void	rev_rotate_a(t_stack *a)
 {
 	if (a->top < 1)
-		return;
+	{
+		ft_putstr_fd("Error\n", 2);
+		exit (1);
+	}
 	int	temp;
 	int	i;
 
@@ -177,10 +197,13 @@ void	rev_rotate_a(stack *a)
 	a->items[a->top] = temp;
 }
 
-void	rev_rotate_b(stack *b)
+void	rev_rotate_b(t_stack *b)
 {
 	if (b->top < 1)
-		return;
+	{
+		ft_putstr_fd("Error\n", 2);
+		exit (1);
+	}
 	int	temp;
 	int	i;
 
