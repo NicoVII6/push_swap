@@ -6,84 +6,40 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:54:16 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/03/05 17:33:10 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/04/08 17:44:54 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "push_swap.h"
 
 int	main(int argc, char *argv[])
 {
+	t_lists	*stacks;
+
+	stacks = malloc(2 * sizeof(t_dlist));
 	if (argc < 2)
-	{
-		// ne rien imprimer et rendre l'invite de commande
-	}
-
+		return 1; // ne rien imprimer et rendre l'invite de commande
+	// initialisation des listes a et b
+	stacks->a = NULL;
+	stacks->b = NULL;
+	// signifie que inputs sont situes entre double quote, donc split necessaire
+	// et on le fait sur argv[1], car argv[0] est pour l'executable
 	if (argc == 2)
+		argv = ft_split((const	char *) argv[1], ' ');
+	stacks = parse_args(stacks, argc, argv); // fonction retourne un pointeur vers la stacks
+	if (argc >= 3 && argc <= 6)
+		small_numb_sort(stacks->a, stacks->b);
+	else
 	{
-		// split ? puis if a > b, swap a, sinon deja sorted
+		stacks = normalize(stacks);
+		stacks->a = decimal_to_binary(stacks->a);
+		radix_sort(stacks->a, stacks->b);
+		//radix_sort(a, b); 
 	}
-
-	if (argc <= 6)
-	{
-		// split
-		//home made algorithm
-	}
-
-	// faire un split avec un char ** ou char * pour les arguments
-
-	// int	input[MAX_INPUT_SIZE];
-	// int	input_size;
-	int	i;
-	int	n;
-	// input_size = 0;
-	int	arr[n];
-	int	temp[n];
-
-	n = argc - 1;
-	i = 1;
-	while (i <= n)
-	{
-		arr[i - 1] = ft_atoi(argv[i]);
-		if (arr[i - 1] < INT_MIN || arr[i - 1] > INT_MAX)
-			return ; // error
-		i++;
-		//input[input_size++] = value;
-	}
-
-	// copy the input array of integers and sort this copy
-	// int	copy[MAX_INPUT_SIZE];
-	// int	copy_size = input_size;
-	// i = 0;
-	// while (i < input_size)
-	// {
-	//	copy[i] = input[i];
-	//	i++;
-	// }
-	// sort_array(copy, copy_size);
-
-	merge_recursive(arr, temp, 0, n - 1); // n - 1 a partir index 0 car n elements a partir argv[1]
-	
-	// assigner nouvel index au tableau original pour que le radix de ces indexs soit synchroniser
-	// avec la liste originale et que les commandes effectuees lors du radix fassent directement
-	// bouger les valeurs de depart ??
-	// A retravailler
-	
-	binary_base(arr, n - 1); // fonction qui convertit index en binaire
-
-	// Replace each element of input with its index in the sorted copy
-
-	/*i = 0;
-	int	index;
-	while (i < input_size)
-	{
-		index = 0;
-		while (index < copy_size && copy[index] < input[i])
-		{
-			intput[i] = index;
-			i++;
-			index++;
-		}
-	}*/
-
-	radix_sort();
+	if (list_size(stacks->a) > 0)
+		clear_list(stacks->a);
+	if (list_size(stacks->b) > 0)
+		clear_list(stacks->b);
+	free(stacks);
+	return (0);
 }

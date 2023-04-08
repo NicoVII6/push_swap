@@ -6,18 +6,18 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 14:28:52 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/03/05 17:33:25 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/04/08 17:24:42 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-// adapter et changer argument de la fonction
-int	ft_atoi(const char *str)
+// utiliser long pour ensuite comparer ac int min et int max
+long	ft_atoi(const char *str)
 {
-	int	i;
-	int	nb;
-	int	sign;
+	int		i;
+	int		sign;
+	long	nb;
 
 	i = 0;
 	nb = 0;
@@ -37,84 +37,102 @@ int	ft_atoi(const char *str)
 		nb = nb * 10 + (str[i] - '0');
 		i++;
 	}
-	return (nb * sign);
-}
-
-// get the digit in the specified place value
-// compter le nombre de digits d'un nombre
-int	get_number_digits(int value)
-{
-	int	digits = 0;
-	while (value > 0)
+	if (nb < INT_MIN || nb > INT_MAX)
 	{
-		value /= 10;
-		digits++;
+		ft_putstr_fd("Error\n", 2);
+		exit (1);
 	}
-	return digits;
+	else
+		return (nb * sign);
 }
 
-int	get_max_value(int arr[], int size)
+int	list_size(t_dlist *a)
 {
-	int	max;
-	int	i;
-
-	if (size <= 0)
-		return ; // any appropriate value indicating an error
-	max = arr[0];
-	i = 1;
-	while (i < size)
+	t_dlist	*temp;
+	int		count;
+	
+	temp = a;
+	count = 0;
+	while (temp)
 	{
-		if (arr[i] > max)
-		{
-			max = arr[i];
-		}
-		i++;
+		count++;
+		temp = temp->next;
+	}
+	return (count);
+}
+
+int	get_min_value(t_dlist *a)
+{
+	t_dlist	*temp;
+	int		min;
+
+	temp = a;
+	min = a->data;
+	while (temp)
+	{
+		if (temp->data < min)
+			min = temp->data;
+		temp = temp->next;
+	}
+	return min;
+}
+
+int	get_max_value(t_dlist *a)
+{
+	t_dlist	*temp;
+	int		max;
+
+	temp = a;
+	max = a->data;
+	while (temp)
+	{
+		if (temp->data > max)
+			max = temp->data;
+		temp = temp->next;
 	}
 	return max;
 }
 
-// a retravailler, faire a l'aide d'une recursion
-int		binary_base(int arr[index], int n)
+// retourne un pointeur qui pointe sur valeur max
+t_dlist	*ptr_to_maximum(t_dlist *a)
 {
-	int	i;
-	int	binary_ind;
-	int	base;
+	t_dlist	*temp;
+	t_dlist	*max_ptr;
+	int	max_value;
 
-	i = 0;
-	binary_ind = 0;
-	base = 1;
-	while (i <= n)
+	temp = a;
+	max_ptr = temp;
+	max_value = temp->data;
+	while (temp)
 	{
-		while (index > 0)
+		if (temp->data > max_value)
 		{
-			binary_ind += (index % 2) * base;
-			index /= 2;
-			base *= 10;
+			max_value = temp->data;
+			max_ptr = temp;
 		}
-		printf("%d", binary_ind);
+		temp = temp->next;
 	}
-	printf("\n");
+	return (max_ptr);
 }
 
-/* la fonction duplique la string src vers une string dst nouvellement créée et retourne
-un pointeur sur la string dst si la duplication réussie, sinon elle retourne la valeur NULL */
-
-char	*ft_strdup(const char *src)
+// retourne un pointeur qui pointe sur la valeur min
+t_dlist	*ptr_to_minimum(t_dlist *a)
 {
-	char	*dst;
-	int		i;
-	int		len;
+	t_dlist	*temp;
+	t_dlist	*min_ptr;
+	int	min_value;
 
-	len = ft_strlen((char *)src);
-	dst = (char *) malloc (sizeof(char) * len + 1);
-	if (dst == NULL)
-		return (NULL);
-	i = 0;
-	while (src[i] != '\0')
+	temp = a;
+	min_ptr = temp;
+	min_value = temp->data;
+	while (temp)
 	{
-		dst[i] = src[i];
-		i++;
+		if (temp->data < min_value)
+		{
+			min_value = temp->data;
+			min_ptr = temp;
+		}
+		temp = temp->next;
 	}
-	dst[i] = '\0';
-	return (dst);
+	return (min_ptr);
 }
