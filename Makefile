@@ -1,25 +1,27 @@
-NAME = push_swap
+HEADIR = includes
 
 SRC = main.c commands_final.c homemade_algo.c \
 	normalize.c parsing.c radix_sort.c \
-	utils_split.c utils2.c utils3.c utils4.c \
-	checking.c \
+	utils_split.c utils3.c utils4.c \
+	checking.c stack_functions.c \
 
 OBJ = $(SRC:.c=.o)
+
+NAME = push_swap
 
 CC = gcc
 
 RM = rm -f
 
-CCFLAGS = -Werror -Wall -Wextra
-
-all : $(NAME)
-
-$(NAME) : $(OBJ)
-		ar -rcs $(NAME) $(OBJ)
+CFLAGS = -Werror -Wall -Wextra -I${HEADIR}
 
 %.o : %.c
-		$(CC) -I. $(CCFLAGS) -o $@ -c $?
+		${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+
+$(NAME) : $(OBJ)
+		$(CC) $^ -o $(NAME)
+
+all : $(NAME)
 
 clean :
 		$(RM) $(OBJ)
@@ -29,4 +31,4 @@ fclean : clean
 
 re :	fclean all
 
-.PHONY : clean fclean re
+.PHONY : all clean fclean re

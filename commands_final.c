@@ -6,146 +6,108 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 15:18:40 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/04/08 16:37:45 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/04/24 18:21:40 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-t_dlist		*swap_a(t_dlist *a)
+void	swap_a(t_stack **stack)
 {
-	t_dlist	*temp;
-	t_dlist	*temp2;
+	int		first;
+	int		second;
 
-	if (a == NULL || a->next == NULL)
-		return (NULL);
-	temp = a;
-	temp2 = a->next;
-	a = temp2;
-	a->next = temp;
-	write(1,"sa\n", 3);
-	return (a);
+	if ((*stack)->next != NULL)
+	{
+		first = ft_stkpop(stack);
+		second = ft_stkpop(stack);
+		ft_stkpush(stack, first);
+		ft_stkpush(stack, second);
+	}
+	write(1, "sa\n", 3);
 }
 
-t_dlist		*swap_b(t_dlist *b)
+// head node goes to bottom
+// retourne un pointeur sur le haut de la stack
+void	rotate_a(t_stack **stack)
 {
-	t_dlist	*temp;
-	t_dlist	*temp2;
+	t_stack	*to_move;
+	t_stack	*temp;
+	int		content;
 
-	if (b == NULL || b->next == NULL)
-		return (NULL);
-	temp = b;
-	temp2 = b->next;
-	b = temp2;
-	b->next = temp;
-	write(1, "sb\n", 3);
-	return (b);
-}
-
-t_dlist		*rotate_a(t_dlist *a)
-{
-	t_dlist	*first;
-	t_dlist	*second;
-
-	if(a == NULL || a->next == NULL)
-		return (NULL);
-	first = go_to_head(a);
-	second = first->prev;
-	second->next = NULL;
-	first->prev = NULL;
-	first->next = go_to_tail(a);
-	first->next->prev = first;
-	a->next = first;
+	temp = *stack; // garde en memoire head de la stack
+	if ((*stack)->next != NULL)
+	{
+		content = ft_stkpop(stack);
+		to_move = ft_stknew(content);
+		while ((*stack)->next)
+		{
+			*stack = (*stack)->next;
+		}
+		(*stack)->next = to_move;
+		*stack = temp; // revient au top de la stack
+	}
 	write(1, "ra\n", 3);
-	return (a);
 }
 
-t_dlist		*rotate_b(t_dlist *b)
+// tail node goes to top
+// renvoie un pointeur sur premier element liste
+void	reverse_rotate_a(t_stack **stack)
 {
-	t_dlist	*first;
-	t_dlist	*second;
+	t_stack	*temp;
+	int		content;
 
-	if(b == NULL || b->next == NULL)
-		return (NULL);
-	first = go_to_head(b);
-	second = first->prev;
-	second->next = NULL; // second devient head (son next pointe sur NULL)
-	first->prev = NULL; // pointe sur NULL puisque tail
-	first->next = go_to_tail(b); // pointeur next de la new tail pointe sur le tail original
-	first->next->prev = first; // update the previous pointer of the original tail
-						// before the rotation, original tail points to the old head of the list
-						// after the rotation the old head becomes the new tail and its previous pointer
-						// points to NULL. we need to update the previous pointer of the original tail
-						// to point to the new tail (which is now the old head) to ensure the list remains circular
-	b->next = first;
-	write(1, "rb\n", 3);
-	return (b);
+	if ((*stack)->next != NULL)
+	{
+		temp = *stack;
+		// boucle jusqu'a atteindre avant dernier noeud
+		while ((*stack)->next && (*stack)->next->next)
+			*stack = (*stack)->next;
+		content = (*stack)->next->data; // recupere contenu dernier noeud 
+		(*stack)->next = NULL; // deconnecte dernier noeud
+		ft_stkpush(&temp, content); // permet de push au top de la stack grace a temp
+		(*stack) = temp; // revient au top d la stack
+		write (1, "rra\n", 4);
+	}
 }
 
-// REVOIR EN UTILISANT FUNCTION ADD TO HEAD
-t_dlist		*reverse_rotate_a(t_dlist *a)
+// top element from stack a goes to head of stack b
+void	push_b(t_stack **stack_a, t_stack **stack_b)
 {
-	t_dlist	*last;
-	t_dlist	*second_last;
+	int		content;
 
-	if (a == NULL || a->next == NULL)
-		return (NULL);
-	last = go_to_tail(a);
-	second_last = last->next;
-	add_to_head(&a, last);
-	second_last->prev = last; // connecte new tail ac new head
-	write(1, "rra\n", 4);
-	return (a);
+	if (!ft_stkisempty(*stack_b))
+	{
+		content = ft_stkpop(stack_a);
+		ft_stkpush(stack_b, content);
+	}
+	write (1, "pb\n", 3);
 }
 
-// REVOIR EN DETAILS
-t_dlist		*reverse_rotate_b(t_dlist *b)
+void	push_a(t_stack **stack_b, t_stack **stack_a)
 {
-	t_dlist	*last;
-	t_dlist	*second_last;
+	int		content;
 
-	if (b == NULL || b->next == NULL)
-		return (NULL);
-	last = go_to_tail(b);
-	second_last = last->next;
-	add_to_head(&b, last);
-	second_last->prev = last; // connecte new tail ac new head
-	write(1, "rrb\n", 4);
-	return (b);
+	if (!ft_stkisempty(*stack_a))
+	{
+		content = ft_stkpop(stack_b);
+		ft_stkpush(stack_a, content);
+	}
+	write (1, "pa\n", 3);
 }
 
-t_dlist		*push_b(t_dlist *a, t_dlist **b)
+void	push_b_algo(int min, t_stack **stack_b)
 {
-	t_dlist	*new;
-	t_dlist *second;
-
-	new = go_to_head(a); // aller 1er element liste a
-	second = new->prev; // second noeud de a
-	second->next = NULL; // initialise second pour etre head de liste a
-	second->prev = new->prev->prev; // connecte nouveau head ac second node
-	new = malloc(sizeof(t_dlist));
-	if (!new)
-		return NULL;
-	add_to_head(b, new); // go the head of b and connect new from a to the top of b list
-	clear_list(a); // clear the head node a moved to b
-	write(1, "pb\n", 3);
-	return (a);
+	if (!ft_stkisempty(*stack_b))
+	{
+		ft_stkpush(stack_b, min);
+	}
+	write (1, "pb\n", 3);
 }
 
-t_dlist		*push_a(t_dlist *b, t_dlist **a)
+void	push_a_algo(int min, t_stack **stack_a)
 {
-	t_dlist	*new;
-	t_dlist	*second;
-
-	new = go_to_head(b);
-	second = new->prev;
-	second->next = NULL;
-	second->prev = new->prev->prev;
-	new = malloc(sizeof(t_dlist));
-	if (!new)
-		return NULL;
-	add_to_head(a, new);
-	clear_list(b);
-	write(1, "pa\n", 3);
-	return (b);
+	if (!ft_stkisempty(*stack_a))
+		ft_stkpush(stack_a, min);
+	write (1, "pa\n", 3);
 }

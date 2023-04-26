@@ -10,31 +10,30 @@ List head = BuildTwoThree();
 WrongPush(head, 1); // try to push a 1 on front -- doesn't work
 }
 
-/* The problem is all in the very last line where the 3-Step Link
+/* WrongPush() is very close to being correct. It takes the correct 3-Step Link In and puts it
+an almost correct context. The problem is all in the very last line where the 3-Step Link
 In dictates that we change the head pointer to refer to the new node. What does the line
 head = newNode; do in WrongPush()? It sets a head pointer, but not the right one. It
 sets the variable named head local to WrongPush(). It does not in any way change the
-variable named head we really cared about which is back in the caller WrontPushTest().
+variable named head we really cared about which is back in the caller WrontPushTest().*/
 
-We need Push() to be able to change some of the caller's memory — namely the head
+/* We need Push() to be able to change some of the caller's memory — namely the head
 variable. The traditional method to allow a function to change its caller's memory is to
-pass a pointer to the caller's memory instead of a copy. 
-
-So in C, to change an int in the caller, pass a int* instead. To change a struct fraction, pass a struct
-fraction* intead. To change an X, pass an X*. 
-So in this case, the value we want to change is struct node*, so we pass a struct node** instead. 
-The two stars (**) are a straight application of the rule. It just happens
+pass a pointer to the caller's memory instead of a copy. So in C, to change an int in the
+caller, pass a int* instead. To change a struct fraction, pass a struct
+fraction* intead. To change an X, pass an X*. So in this case, the value we want to
+change is struct node*, so we pass a struct node** instead. The two stars
+(**) are a little scary, but really it's just a straight application of the rule. It just happens
 that the value we want to change already has one star (*), so the parameter to change it
 has two (**). Or put another way: the type of the head pointer is "pointer to a struct
 node." In order to change that pointer, we need to pass a pointer to it, which will be a
 "pointer to a pointer to a struct node".
-
 Instead of defining WrongPush(struct node* head, int data); we define
 Push(struct node** headRef, int data);. The first form passes a copy of
-the head pointer. The second, correct form passes a pointer to the head pointer. 
-THE RULE IS TO MODIFY MEMORY CALLER PASS A POINTER TO THAT MEMORY
-The parameter has the word "ref" in it as a reminder that this is a "reference" (struct node**) 
-pointer to the head pointer instead of an ordinary (struct node*) copy of the head pointer.*/
+the head pointer. The second, correct form passes a pointer to the head pointer. The rule
+is: to modify caller memory, pass a pointer to that memory. The parameter has the word
+"ref" in it as a reminder that this is a "reference" (struct node**) pointer to the
+head pointer instead of an ordinary (struct node*) copy of the head pointer.*/
 
 /*
 Takes a list and a data value.
@@ -59,16 +58,14 @@ Push(&head, 13);
 }
 
 // Return the number of nodes in a list (while-loop version)
-int Length(struct node* head)
-{
-	int count = 0;
-	struct node* current = head;
-	while (current != NULL)
-	{
-		count++;
-		current = current->next
-	}
-	return(count);
+int Length(struct node* head) {
+int count = 0;
+struct node* current = head;
+while (current != NULL) {
+count++;
+current = current->next
+}
+return(count);
 }
 
 /* 2) Changing a Pointer With A Reference Pointer

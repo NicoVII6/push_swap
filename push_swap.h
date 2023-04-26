@@ -6,70 +6,73 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:29:04 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/04/08 19:00:20 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/04/26 17:55:35 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <limits.h>
-#include <stdio.h>
-#include <fcntl.h>
+#ifndef PUSH_SWAP_H
+# define PUSH_SWAP_H
+# include <unistd.h>
+# include <stdlib.h>
+# include <limits.h>
+# include <stdio.h>
+# include <fcntl.h>
+# include <stddef.h>
 
-#define TRUE 1
-#define FALSE 0
+//#define TRUE 1
+//#define FALSE 0
 
-// double linked list structure ac pointeurs sur previous and next elements
-typedef struct s_dlist {
-	long			data;
-	struct s_dlist	*next;
-	struct s_dlist	*prev;
-}	t_dlist;
+typedef struct s_stack
+{
+	int				data;
+	struct	s_stack	*next;
+}	t_stack;
 
-// structure qui contient les pointeurs a et b, qui pointent respectivement
-// au top node de chaque liste
-// est ce que count est necessaire dans le programme ??
-typedef struct s_lists {
-	t_dlist	*a;
-	t_dlist	*b;
-	size_t	count;
-}	t_lists;
+//stack functions
+t_stack		*ft_stknew(int data);
+int			ft_stkisempty(t_stack *stack);
+int			ft_stkpeek(t_stack *stack);
+int			ft_stksize(t_stack *stack);
+int			ft_stkpop(t_stack **stack);
+void		ft_stkpush(t_stack **stack, int data);
+void		stkpush_parsing(t_stack **stack, t_stack *new_node);
+void		ft_stkclear(t_stack **stack);
 
 //utils3
 void		ft_putstr_fd(char *s, int fd);
-int			check_str_figures(char *str);
-int			check_duplicate(t_dlist *a, int data);
-t_dlist		*decimal_to_binary(t_dlist *a);
+t_stack		*decimal_to_binary(t_stack **stack_a);
 int			dec_to_bin_convert(int decimal_val);
-
-//homemade_algo
-t_dlist		*three_numb_sort(t_dlist *a);
-t_dlist		*four_numb_sort(t_dlist *a, t_dlist *b);
-t_dlist		*five_numb_sort(t_dlist *a, t_dlist *b);
-t_dlist		*small_numb_sort(t_dlist *a, t_dlist *b);
-
-//utils2
-long		ft_atoi(const char *str);
-int			list_size(t_dlist *a);
-int			get_min_value(t_dlist *a);
-int			get_max_value(t_dlist *a);
-t_dlist		*ptr_to_maximum(t_dlist *a);
-t_dlist		*ptr_to_minimum(t_dlist *a);
-
+int			is_sorted(t_stack **stack);
+void		ft_error(t_stack **stack_a, t_stack **stack_b);
 
 //utils4
-int			get_index_from_value(t_dlist *s, int num);
-int			get_data_from_index(t_dlist *s, int index);
-t_dlist		*new_list(int data);
-void		clear_list(t_dlist *list);
-void		add_to_head(t_dlist **list, t_dlist *new);
-void		add_to_tail(t_dlist **list, t_dlist *new);
-t_dlist		*go_to_head(t_dlist *list);
-t_dlist		*go_to_tail(t_dlist *list);
+int			get_index_from_value(t_stack **stack, int num);
+int			get_data_from_index(t_stack **stack, int index);
 
-t_lists		*parse_args(t_lists *stacks, int argc, char *argv[]);
-t_lists		*normalize(t_lists *stacks);
-t_dlist		*radix_sort(t_dlist *a, t_dlist *b);
+//homemade_algo
+void		three_numb_sort(t_stack **stack_a);
+void		four_numb_sort(t_stack **stack_a, t_stack **stack_b);
+void		five_numb_sort(t_stack **stack_a, t_stack **stack_b);
+t_stack		*small_numb_sort(t_stack **stack_a, t_stack **stack_b, int argc);
+void		algo_choice(t_stack **stack_a, t_stack **stack_b, int argc);
+
+//parsing
+int			parse_args(t_stack **stack_a, int argc, char *argv[]);
+int			check_str_figures(char *str);
+//int			check_duplicate(t_stack *stack_a, int num);
+int			check_duplicate(int *arr, int size);
+long		ft_atol(const char *str);
+int			ft_atoi(const char *str);
+
+//normalize
+t_stack		*ptr_to_maximum(t_stack *stack);
+t_stack		*ptr_to_minimum(t_stack *stack);
+t_stack		*normalize(t_stack *stack_a);
+
+//radix_sort
+int			get_min_value(t_stack **stack_a);
+int			get_max_value(t_stack **stack_a);
+t_stack		*radix_sort(t_stack **stack_a, t_stack **stack_b);
 
 //utils_split
 size_t		ft_strlen(const char *str);
@@ -80,11 +83,18 @@ size_t		ft_strlcpy(char *dst, const char *src, size_t len);
 char		**ft_split(const char *s, char c);
 
 //commands_finals
-t_dlist		*swap_a(t_dlist *a);
-t_dlist		*swap_b(t_dlist *b);
-t_dlist		*rotate_a(t_dlist *a);
-t_dlist		*rotate_b(t_dlist *b);
-t_dlist		*reverse_rotate_a(t_dlist *a);
-t_dlist		*reverse_rotate_b(t_dlist *b);
-t_dlist		*push_a(t_dlist *b, t_dlist **a);
-t_dlist		*push_b(t_dlist *a, t_dlist **b);
+void		swap_a(t_stack **stack);
+void		rotate_a(t_stack **stack);
+void		reverse_rotate_a(t_stack **stack);
+void		push_a(t_stack **stacks_b, t_stack **stacks_a);
+void		push_b(t_stack **stacks_a, t_stack **stacks_b);
+void		push_b_algo(int min, t_stack **stack_b);
+void		push_a_algo(int min, t_stack **stack_a);
+
+//checking
+void	print_list(t_stack **stack);
+void	db_show_stack(t_stack **stack_a, t_stack **stack_b);
+//void	display_lst(t_dlist **ptr_to_head, char *name);
+//void	display_node(t_dlist *list);
+
+#endif

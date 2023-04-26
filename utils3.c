@@ -6,7 +6,7 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 15:29:19 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/04/08 17:41:59 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/04/24 18:21:16 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,62 +18,65 @@ void	ft_putstr_fd(char *s, int fd)
 	write (fd, s, ft_strlen(s));
 }
 
-// function that checks if all arguments are figures
-int	check_str_figures(char *str)
+void	ft_error(t_stack **stack_a, t_stack **stack_b)
 {
-	int	i;
+	write(2, "Error\n", 6);
+	ft_stkclear(stack_a);
+	ft_stkclear(stack_b);
+	exit(1);
+}
+
+// fonction qui check si stack est triee
+// si deja triee, elle retourne 1, sinon 0
+// dans les deux cas, on se remet sur le top de la stack avant return
+int		is_sorted(t_stack **stack)
+{
+	t_stack	*temp;
+
+	temp = *stack;
+	while (*stack && (*stack)->next)
+	{
+		if ((*stack)->data > (*stack)->next->data)
+		{
+			*stack = temp;
+			return (0);
+		}
+		*stack = (*stack)->next;
+	}
+	*stack = temp;
+	return (1);
+}
+/*
+void	free_arg(int argc, char **argv)
+{
+	int		i;
 
 	i = 0;
-	if (str[i] == 45)
+	while (argv[i])
+	{
+		free(argv[i]);
 		i++;
-	while (str[i])
-	{
-		if (str[i] < 48 || str[i] > 57)
-		{
-			ft_putstr_fd("Error\n", 2);
-			exit (1);
-		}
-		else
-			i++;
 	}
-	return 0;
+	free(argv);
 }
+*/
 
-// prends en parametres un pointeur sur la liste a et la data correspondante
-// on distribue chaque argument recu en 
-// compare cette data avec les autres de la liste pour voir si doublon
-int	check_duplicate(t_dlist *a, int data)
+t_stack	*decimal_to_binary(t_stack **stack_a)
 {
-	t_dlist	*tmp;
-
-	tmp = a;
-	while (tmp)
-	{
-		if (tmp->data == data)
-		{
-			ft_putstr_fd("Error\n", 2);
-			exit (1);
-		}
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-t_dlist	*decimal_to_binary(t_dlist *a) // ou t_lists *stacks ??
-{
-	t_dlist	*temp;
+	t_stack	*temp;
 	int		decimal_val;
 	int		binary_val;
 	
-	temp = a;
-	while (temp)
+	temp = *stack_a;
+	while ((*stack_a)->next)
 	{
-		decimal_val = temp->data;
-		binary_val = dec_to_bin_convert(temp->data);
-		temp->data = binary_val;
-		temp = temp->next;
+		decimal_val = (*stack_a)->data;
+		binary_val = dec_to_bin_convert(decimal_val);
+		(*stack_a)->data = binary_val; // remplace valeur decimale par valeur binaire ds noeud
+		(*stack_a) = (*stack_a)->next;
 	}
-	return (a);
+	*stack_a = temp; // on revient au top de la stack avant de la retourner
+	return (*stack_a);
 }
 
 int		dec_to_bin_convert(int decimal_val)

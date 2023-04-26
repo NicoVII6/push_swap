@@ -6,88 +6,100 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:26:05 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/04/08 19:00:13 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/04/26 17:55:10 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-t_dlist		*three_numb_sort(t_dlist *a)
+// FONCTION DE PLUS DE 25 LIGNES
+// A CHAQUE IF APPELER UNE FONCTION
+// 1er if signifie que nombres sont deja tries
+void	three_numb_sort(t_stack **stack)
 {
-	if ((a->data > a->next->data) && (a->next->data >a->next->next->data))
+	if (((*stack)->data > (*stack)->next->data)
+		&& ((*stack)->next->data > (*stack)->next->next->data))
+			exit(1);
+	else if (((*stack)->data > (*stack)->next->data)
+		&& ((*stack)->next->data < (*stack)->next->next->data)
+		&& ((*stack)->next->next->data > (*stack)->data))
 	{
-		//deja trie
-		return 0;
+		swap_a(stack);
 	}
-	else if ((a->data > a->next->data) && (a->next->data <a->next->next->data)
-		&& (a->next->next->data > a->data))
+	else if (((*stack)->data > (*stack)->next->data)
+		&& ((*stack)->next->data > (*stack)->next->next->data)
+		&& ((*stack)->next->next->data < (*stack)->data))
 	{
-		swap_a(a);
-		return 0; // means the swap was performed good
+		swap_a(stack);
+		reverse_rotate_a(stack);
 	}
-	else if ((a->data > a->next->data) && (a->next->data >a->next->next->data)
-		&& (a->next->next->data < a->data))
+	else if (((*stack)->data > (*stack)->next->data)
+		&& ((*stack)->next->data < (*stack)->next->next->data)
+		&& ((*stack)->next->next->data < (*stack)->data))
 	{
-		swap_a(a);
-		reverse_rotate_a(a);
-		return 0;
+		rotate_a(stack);
 	}
-	else if ((a->data > a->next->data) && (a->next->data <a->next->next->data)
-		&& (a->next->next->data < a->data))
+	else if (((*stack)->data < (*stack)->next->data)
+		&& ((*stack)->next->data > (*stack)->next->next->data)
+		&& ((*stack)->next->next->data > (*stack)->data))
 	{
-		rotate_a(a);
-		return 0;
+		swap_a(stack);
+		rotate_a(stack);
 	}
-	else if ((a->data < a->next->data) && (a->next->data >a->next->next->data)
-		&& (a->next->next->data > a->data))
+	else if (((*stack)->data < (*stack)->next->data)
+		&& ((*stack)->next->data > (*stack)->next->next->data)
+		&& ((*stack)->next->next->data < (*stack)->data))
 	{
-		swap_a(a);
-		rotate_a(a);
-		return 0;
+		reverse_rotate_a(stack);
 	}
-	else if ((a->data < a->next->data) && (a->next->data >a->next->next->data)
-		&& (a->next->next->data < a->data))
-	{
-		reverse_rotate_a(a);
-		return 0;
-	}
-	return (a);
 }
 
-t_dlist		*four_numb_sort(t_dlist *a, t_dlist *b)
+void	four_numb_sort(t_stack **stack_a, t_stack **stack_b)
 {
 	int	min;
 
-	min = get_min_value(a);
-	push_b(&min, &b);
-	three_numb_sort(a);
-	push_a(&min, &a);
-	return (a);
+	min = get_min_value(stack_a);
+	push_b_algo(min, stack_b);
+	three_numb_sort(stack_a);
+	push_a_algo(min, stack_a);
 }
 
-t_dlist		*five_numb_sort(t_dlist *a, t_dlist *b)
+void	five_numb_sort(t_stack **stack_a, t_stack **stack_b)
 {
 	int	min;
 
-	min = get_min_value(a);
-	push_b(&min, &b); 
-	four_numb_sort(a, b);
-	push_a(&min, &a);
-	return (a);
+	min = get_min_value(stack_a);
+	push_b_algo(min, stack_b);
+	four_numb_sort(stack_a, stack_b);
+	push_a_algo(min, stack_a);
 }
 
-t_dlist		*small_numb_sort(t_dlist *a, t_dlist *b)
+t_stack		*small_numb_sort(t_stack **stack_a, t_stack **stack_b, int argc)
 {
-	if (list_size(a) == 2)
-	{
-		if (a < a->next)
-			swap_a(a);
-	}
-	else if (list_size(a) == 3)
-		three_numb_sort(a);
-	else if (list_size(a) == 4)
-		four_numb_sort(a, b);
+	if (argc == 4)
+		three_numb_sort(stack_a);
+	else if (argc == 5)
+		four_numb_sort(stack_a, stack_b);
 	else
-		five_numb_sort(a, b);
-	return (a);
+		five_numb_sort(stack_a, stack_b);
+	return (*stack_a);
+}
+
+// si arguments recus sans double quote
+void	algo_choice(t_stack **stack_a, t_stack **stack_b, int argc)
+{
+	if (argc == 2)
+	{
+		if (!is_sorted(stack_a))
+			rotate_a(stack_a);
+	}
+	else if (argc >= 3 && argc < 6)
+	{
+		small_numb_sort(stack_a, stack_b, argc);
+	}
+	else
+	{
+		decimal_to_binary(stack_a);
+		radix_sort(stack_a, stack_b);
+	}
 }

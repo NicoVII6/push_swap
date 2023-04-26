@@ -6,20 +6,24 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 17:19:07 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/03/05 17:33:23 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/03/12 19:11:26 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PUSH_SWAP.H"
-#include <stdio.h> // juste pour tester !!
 
-#define MAX_INPUT_SIZE 10000
+// mettre un pointeur sur la sorted array
+// distribuer les index de la sorted_array sur l'array originale
+// en utilisant la fonction get_min_value (utils3)
+// commencer la distribution en cherchant la valeur la plus petite
+// lui attribuer le nouvel index et changer cette valeur en long_max
+// refaire la meme operation pour l'index suivant et une fois l'attribution
+// faite, attribuer la longueur long_max - 1. continuer l'operation
+// jusqu'a ce que toutes les valeurs soient indexees
 
-// reflechir au type de la fonction ?? void parait bizarre puisqu'on a besoin de retourner
-// un pointeur sur l'array triee
-// Attention, il faut veiller a garder un pointeur sur l'array avant tri
-// Utiliser un pointeur de pointeur ??
-void	merge_recursive(int arr[], int temp[], int low, int high)
+// RETRAVAILLER LES FONCTIONS MERGE SORT, MERGE_RECURSIVE, GET_MIN_VALUE
+// ET INDEX_ASSOCIATION POUR QUE LE PROCESS FONCTIONNE
+long int		merge_recursive(t_stack *s, int low, int high)
 {
 	int	mid;
 
@@ -27,34 +31,41 @@ void	merge_recursive(int arr[], int temp[], int low, int high)
 		return;
 	// signifie que la subdivision est finie
 	mid = (low + high) / 2;
-	merge_recursive(arr, temp, low, mid);
-	merge_recursive(arr, temp, mid + 1, high); // right portion starts with index mid + 1
-	merge_sort(arr, temp, low, mid, high);
+	// split the left and right sub-array recursively
+	merge_recursive(arr, low, mid);
+	merge_recursive(arr, mid + 1, high); // right portion starts with index mid + 1
+	// merge the sub-arrays
+	merge_sort(arr, low, mid, high);
 }
-
-// revoir pour les parametresd de la fonction, surtt int temp[]
-// utiliser un pointeur sur int pour la fonction ??
-int		merge_sort(int arr[], int temp[], int low, int mid, int high)
+// function returns a pointer to the sorted array
+long int		*merge_sort(long int arr[], int low, int mid, int high)
 {
-	int	left_size;
+	long int	left_size;
 	int	right_size;
 	int	i;
 	int	j;
 	int	k;
-	int	temp_left[left_size];
-	int	temp_right[right_size];
+	long int	*temp_left;
+	long int	*temp_right;
+	long int	*sorted_arr;
 
 	left_size = mid - low + 1;
 	right_size = high - mid;
+	temp_left = malloc(sizeof(long int) * left_size);
+	temp_right = malloc(sizeof(long int) * right_size);
+	sorted_arr = malloc((left_size + right_size) * sizeof(long int));
+	// copy data into temp left array
 	i = 0;
 	while (i < left_size)
 	{
-		temp_left[i] = arr[low + i];
+		temp_left[i] = sorted_arr[low + i];
 		i++;
 	}
+	// copy data into temp right array
+	i = 0;
 	while (i < right_size)
 	{
-		temp_left[i] = arr[mid + 1 + i];
+		temp_left[i] = sorted_arr[mid + 1 + i];
 		i++;
 	}
 	// now we'll merge.  we have 3 counting variables.
@@ -66,25 +77,36 @@ int		merge_sort(int arr[], int temp[], int low, int mid, int high)
 	i = 0;
 	j = 0;
 	k = low;
-	while (k <= high)
+	// merge into arr[k] until one of the left or right temp array is empty
+	while (i < left_size && j < right_size)
 	{
-		// la 1ere condition nous dit que si i n'est pas strictement inferieur a left_size
-		// c'est qu'on a atteint la fin du tableau gauche. On ne va donc plus rien copier de temp_left
-		// on passe donc directement au else pour copier le reste de temp_right
-		// si la 2e condition n'est pas respectee, on copie directement les temp_left restant
-		// la 3e condition est la uniquement pour trancher si les 2 premieres condtions sont respectees
-		if ((i < left_size) && (j >= right_size) || temp_left[i] < temp_right[j])
+		if(temp_left[i] < temp_right[j])
 		{
-			arr[k] = temp_left[i];
-			k++;
+			sorted_arr[k] = temp_left[i];
 			i++;
 		}
 		else
 		{
-			arr[k] = temp_right[j];
-			k++;
-			i++;
+			sorted_arr[k] = temp_right[j];
+			j++;
 		}
+		k++;
 	}
-	return (arr);
+	// copy the remaining elements of temp_left (temp_right is empty)
+	while (i < left_size)
+	{
+		sorted_arr[k] = temp_left[i];
+		i++;
+		k++;
+	}
+	// copy the remaining elements of temp_right
+	while (j < right_size)
+	{
+		sorted_arr[k] = temp_right[j];
+		j++;
+		k++;
+	}
+	free(temp_left);
+	free(temp_right);
+	return (sorted_arr);
 }

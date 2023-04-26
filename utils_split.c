@@ -6,7 +6,7 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 17:16:49 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/04/08 17:44:45 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/04/17 12:59:49 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ static void	get_row(char **str, int *str_len, char c)
 		i++;
 	}
 }
+
 /* split takes a string s and a delimiter char c as input
  * function returns a pointer to a dynamically allocated array of strings
  * count_words takes the string and the delimiter and returns the number
