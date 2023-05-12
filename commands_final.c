@@ -6,7 +6,7 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 15:18:40 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/04/24 18:21:40 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/05/12 13:15:19 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	push_a(t_stack **stack_b, t_stack **stack_a)
 	}
 	write (1, "pa\n", 3);
 }
-
+/*
 void	push_b_algo(int min, t_stack **stack_b)
 {
 	if (!ft_stkisempty(*stack_b))
@@ -111,3 +111,4 @@ void	push_a_algo(int min, t_stack **stack_a)
 		ft_stkpush(stack_a, min);
 	write (1, "pa\n", 3);
 }
+*/

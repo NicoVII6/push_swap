@@ -6,28 +6,11 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 13:10:08 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/04/24 15:16:32 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/05/11 19:08:05 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-int	get_min_value(t_stack **stack_a)
-{
-	t_stack	*temp;
-	int		min;
-
-	temp = *stack_a; // garde repere sur top de la stack
-	min = (*stack_a)->data;
-	while ((*stack_a)->next)
-	{
-		if ((*stack_a)->data < min)
-			min = (*stack_a)->data;
-		*stack_a = (*stack_a)->next;
-	}
-	(*stack_a) = temp; // remet au top de la stack
-	return (min);
-}
 
 int	get_max_value(t_stack **stack_a)
 {

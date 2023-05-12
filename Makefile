@@ -1,9 +1,10 @@
 HEADIR = includes
 
-SRC = main.c commands_final.c homemade_algo.c \
+SRC = main.c commands_final.c algo_choice.c \
 	normalize.c parsing.c radix_sort.c \
 	utils_split.c utils3.c utils4.c \
 	checking.c stack_functions.c \
+	sort_small_numbers.c \
 
 OBJ = $(SRC:.c=.o)
 

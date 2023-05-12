@@ -6,7 +6,7 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 15:30:38 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/04/26 17:55:44 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/05/11 17:49:42 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,28 +113,11 @@ int	check_duplicate(int *arr, int size)
 	return 0;
 }
 
-// compare data avec les autres contenus de la liste pour voir si doublon
-/*int	check_duplicate(t_stack *stack_a, int num)
-{
-	t_stack	*tmp;
-
-	tmp = stack_a;
-	while (tmp)
-	{
-		if (tmp->data == num)
-		{
-			return (1);
-		}
-		tmp = tmp->next;
-	}
-	return 0;
-}*/
 // ici on circule ds la stack avec tmp donc qd on retourne, la stack est
 // au meme endroit qu'au moment du call de la fonction
 
 // function which parse arguments into stack a
 // returns a pointer to the stack
-// LA FONCTION MARCHE CORRECTEMENT, VOIR AC LE PRINT_LIST A LA FIN
 int parse_args(t_stack **stack_a, int argc, char *argv[])
 {
 	int		i;

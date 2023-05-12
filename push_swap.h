@@ -6,7 +6,7 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:29:04 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/04/26 17:55:35 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/05/12 15:09:02 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,19 @@ int			get_index_from_value(t_stack **stack, int num);
 int			get_data_from_index(t_stack **stack, int index);
 
 //homemade_algo
+
+//int			get_min_value(t_stack *stack_a);
+//int			get_min_value(t_stack **stack_a);
+t_stack		*small_numb_sort(t_stack **stack_a, t_stack **stack_b, int argc);
+
+//algo_choice
+void		algo_choice(t_stack **stack_a, t_stack **stack_b, int argc);
+t_stack		*small_numb_sort(t_stack **stack_a, t_stack **stack_b, int argc);
+
+//sort_small_numbers
 void		three_numb_sort(t_stack **stack_a);
 void		four_numb_sort(t_stack **stack_a, t_stack **stack_b);
 void		five_numb_sort(t_stack **stack_a, t_stack **stack_b);
-t_stack		*small_numb_sort(t_stack **stack_a, t_stack **stack_b, int argc);
-void		algo_choice(t_stack **stack_a, t_stack **stack_b, int argc);
 
 //parsing
 int			parse_args(t_stack **stack_a, int argc, char *argv[]);
@@ -70,16 +78,12 @@ t_stack		*ptr_to_minimum(t_stack *stack);
 t_stack		*normalize(t_stack *stack_a);
 
 //radix_sort
-int			get_min_value(t_stack **stack_a);
 int			get_max_value(t_stack **stack_a);
 t_stack		*radix_sort(t_stack **stack_a, t_stack **stack_b);
 
 //utils_split
 size_t		ft_strlen(const char *str);
 size_t		ft_strlcpy(char *dst, const char *src, size_t len);
-//static int	count_words(const char *s, char c);
-//static char	**free_all(char **arr);
-//static void	get_row(char **str, int *str_len, char c);
 char		**ft_split(const char *s, char c);
 
 //commands_finals
@@ -88,8 +92,8 @@ void		rotate_a(t_stack **stack);
 void		reverse_rotate_a(t_stack **stack);
 void		push_a(t_stack **stacks_b, t_stack **stacks_a);
 void		push_b(t_stack **stacks_a, t_stack **stacks_b);
-void		push_b_algo(int min, t_stack **stack_b);
-void		push_a_algo(int min, t_stack **stack_a);
+//void		push_b_algo(int min, t_stack **stack_b);
+//void		push_a_algo(int min, t_stack **stack_a);
 
 //checking
 void	print_list(t_stack **stack);
