@@ -6,7 +6,7 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:29:04 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/05/12 15:09:02 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/05/15 21:44:48 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,6 @@ void		ft_error(t_stack **stack_a, t_stack **stack_b);
 int			get_index_from_value(t_stack **stack, int num);
 int			get_data_from_index(t_stack **stack, int index);
 
-//homemade_algo
-
-//int			get_min_value(t_stack *stack_a);
-//int			get_min_value(t_stack **stack_a);
-t_stack		*small_numb_sort(t_stack **stack_a, t_stack **stack_b, int argc);
-
 //algo_choice
 void		algo_choice(t_stack **stack_a, t_stack **stack_b, int argc);
 t_stack		*small_numb_sort(t_stack **stack_a, t_stack **stack_b, int argc);
@@ -67,7 +61,6 @@ void		five_numb_sort(t_stack **stack_a, t_stack **stack_b);
 //parsing
 int			parse_args(t_stack **stack_a, int argc, char *argv[]);
 int			check_str_figures(char *str);
-//int			check_duplicate(t_stack *stack_a, int num);
 int			check_duplicate(int *arr, int size);
 long		ft_atol(const char *str);
 int			ft_atoi(const char *str);
@@ -92,13 +85,9 @@ void		rotate_a(t_stack **stack);
 void		reverse_rotate_a(t_stack **stack);
 void		push_a(t_stack **stacks_b, t_stack **stacks_a);
 void		push_b(t_stack **stacks_a, t_stack **stacks_b);
-//void		push_b_algo(int min, t_stack **stack_b);
-//void		push_a_algo(int min, t_stack **stack_a);
 
 //checking
 void	print_list(t_stack **stack);
 void	db_show_stack(t_stack **stack_a, t_stack **stack_b);
-//void	display_lst(t_dlist **ptr_to_head, char *name);
-//void	display_node(t_dlist *list);
 
 #endif

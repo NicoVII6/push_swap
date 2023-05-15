@@ -6,7 +6,7 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 15:18:40 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/05/12 13:15:19 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/05/15 21:42:43 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,27 @@ void	swap_a(t_stack **stack)
 	write(1, "sa\n", 3);
 }
 
-// head node goes to bottom
-// retourne un pointeur sur le haut de la stack
-void	rotate_a(t_stack **stack)
+// top node goes to bottom
+void rotate_a(t_stack **stack)
 {
-	t_stack	*to_move;
-	t_stack	*temp;
-	int		content;
-
-	temp = *stack; // garde en memoire head de la stack
-	if ((*stack)->next != NULL)
-	{
-		content = ft_stkpop(stack);
-		to_move = ft_stknew(content);
-		while ((*stack)->next)
-		{
-			*stack = (*stack)->next;
-		}
-		(*stack)->next = to_move;
-		*stack = temp; // revient au top de la stack
+	// Pop the top element and store its value.
+	int value = (*stack)->data;
+	t_stack *temp = *stack;
+	*stack = (*stack)->next;
+	free(temp); // supprime premier noeud apres avoir enregistre sa data
+	t_stack *last = *stack;
+	// Traverse the stack to the last element.
+	while (last->next != NULL) {
+		last = last->next;
 	}
+	// Create a new node with the stored value and set its `next` pointer to `NULL`.
+	t_stack *new_node = (t_stack *) malloc(sizeof(t_stack));
+	if (new_node == NULL)
+		exit (1); // verifier si bonne sortie
+	new_node->data = value;
+	new_node->next = NULL;
+	// Set the `next` pointer of the current last element to the new node.
+	last->next = new_node; // the top value which is rotate
 	write(1, "ra\n", 3);
 }
 
@@ -95,20 +96,3 @@ void	push_a(t_stack **stack_b, t_stack **stack_a)
 	}
 	write (1, "pa\n", 3);
 }
-/*
-void	push_b_algo(int min, t_stack **stack_b)
-{
-	if (!ft_stkisempty(*stack_b))
-	{
-		ft_stkpush(stack_b, min);
-	}
-	write (1, "pb\n", 3);
-}
-
-void	push_a_algo(int min, t_stack **stack_a)
-{
-	if (!ft_stkisempty(*stack_a))
-		ft_stkpush(stack_a, min);
-	write (1, "pa\n", 3);
-}
-*/

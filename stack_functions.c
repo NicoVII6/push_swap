@@ -6,13 +6,14 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 12:46:36 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/05/11 19:07:47 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/05/15 21:43:05 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
 /* main rule of stack : Last In First Out !! */
+
 
 // retourne un pointeur sur l'element ajouté a la stack
 t_stack		*ft_stknew(int data)
