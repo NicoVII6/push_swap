@@ -6,7 +6,7 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:54:16 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/05/15 21:41:24 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/05/16 18:24:01 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	main(int argc, char *argv[])
 	normalize(stack_a);
 	db_show_stack(&stack_a, &stack_b);
 	algo_choice(&stack_a, &stack_b, argc);
-	//db_show_stack(&stack_a, &stack_b);
+	db_show_stack(&stack_a, &stack_b);
 	if (ft_stksize(stack_a) > 0)
 		ft_stkclear(&stack_a); // free tous les elements de la stack
 	if (ft_stksize(stack_b) > 0)

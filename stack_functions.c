@@ -6,7 +6,7 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 12:46:36 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/05/15 21:43:05 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/05/16 16:09:55 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,13 @@ int		ft_stksize(t_stack *stack)
 		stack = stack->next;
 	}
 	return (size);
+}
+
+t_stack *ft_stkpop_push(t_stack **stack)
+{
+    t_stack *temp = *stack;
+    *stack = (*stack)->next;
+    return (temp);
 }
 
 // removes from the stack the most recent added element

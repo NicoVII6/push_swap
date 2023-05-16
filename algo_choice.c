@@ -6,7 +6,7 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 17:56:39 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/05/15 21:45:52 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/05/16 16:39:23 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ void	algo_choice(t_stack **stack_a, t_stack **stack_b, int argc)
 	else if (argc >= 3 && argc <= 5)
 	{
 		small_numb_sort(stack_a, stack_b, argc);
-		db_show_stack(stack_a, stack_b);
+		//db_show_stack(stack_a, stack_b);
 	}
 	else
 	{
-		decimal_to_binary(stack_a);
-		//db_show_stack(stack_a, stack_b);
+		//decimal_to_binary(stack_a);
 		radix_sort(stack_a, stack_b);
+		//db_show_stack(stack_a, stack_b);
 	}
 }
 

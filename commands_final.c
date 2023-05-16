@@ -6,7 +6,7 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 15:18:40 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/05/15 21:42:43 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/05/16 16:10:52 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void rotate_a(t_stack **stack)
 }
 
 // tail node goes to top
-// renvoie un pointeur sur premier element liste
 void	reverse_rotate_a(t_stack **stack)
 {
 	t_stack	*temp;
@@ -72,27 +71,24 @@ void	reverse_rotate_a(t_stack **stack)
 	}
 }
 
-// top element from stack a goes to head of stack b
 void	push_b(t_stack **stack_a, t_stack **stack_b)
 {
-	int		content;
+	t_stack	*top_a;
+	t_stack	*new_node;
 
-	if (!ft_stkisempty(*stack_b))
-	{
-		content = ft_stkpop(stack_a);
-		ft_stkpush(stack_b, content);
-	}
-	write (1, "pb\n", 3);
+	top_a = ft_stkpop_push(stack_a);
+	new_node = ft_stknew(top_a->data); // ajoute new_node to stack_b
+	new_node->next = *stack_b; // set the next pointer of new_node to the top of stack_b
+	*stack_b = new_node; // update stack_b to point to the new node
 }
 
 void	push_a(t_stack **stack_b, t_stack **stack_a)
 {
-	int		content;
+	t_stack	*top_b;
+	t_stack	*new_node;
 
-	if (!ft_stkisempty(*stack_a))
-	{
-		content = ft_stkpop(stack_b);
-		ft_stkpush(stack_a, content);
-	}
-	write (1, "pa\n", 3);
+	top_b = ft_stkpop_push(stack_b);
+	new_node = ft_stknew(top_b->data);
+	new_node->next = *stack_a;
+	*stack_a = new_node;
 }

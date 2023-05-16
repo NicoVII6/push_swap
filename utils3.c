@@ -6,7 +6,7 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 15:29:19 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/05/15 21:44:02 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/05/16 18:14:00 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,41 +60,3 @@ void	free_arg(int argc, char **argv)
 	free(argv);
 }
 */
-
-t_stack	*decimal_to_binary(t_stack **stack_a)
-{
-	t_stack	*temp;
-	int		decimal_val;
-	int		binary_val;
-	
-	temp = *stack_a;
-	while ((*stack_a)->next)
-	{
-		decimal_val = (*stack_a)->data;
-		binary_val = dec_to_bin_convert(decimal_val);
-		(*stack_a)->data = binary_val; // remplace valeur decimale par valeur binaire ds noeud
-		(*stack_a) = (*stack_a)->next;
-	}
-	*stack_a = temp; // on revient au top de la stack avant de la retourner
-	return (*stack_a);
-}
-
-int		dec_to_bin_convert(int decimal_val)
-{
-	int	quotient;
-	int	remainder;
-	int	binary_val;
-	int	unit;
-
-	quotient = decimal_val;
-	binary_val = 0;
-	unit = 1;
-	while (quotient != 0)
-	{
-		remainder = decimal_val % 2;
-		quotient = decimal_val / 2;
-		binary_val += remainder * unit;
-		unit *= 10;
-	}
-	return (binary_val);
-}

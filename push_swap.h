@@ -6,7 +6,7 @@
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:29:04 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/05/15 21:44:48 by ndecotti         ###   ########.fr       */
+/*   Updated: 2023/05/16 18:23:28 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,6 @@
 # include <fcntl.h>
 # include <stddef.h>
 
-//#define TRUE 1
-//#define FALSE 0
-
 typedef struct s_stack
 {
 	int				data;
@@ -33,6 +30,7 @@ t_stack		*ft_stknew(int data);
 int			ft_stkisempty(t_stack *stack);
 int			ft_stkpeek(t_stack *stack);
 int			ft_stksize(t_stack *stack);
+t_stack 	*ft_stkpop_push(t_stack **stack);
 int			ft_stkpop(t_stack **stack);
 void		ft_stkpush(t_stack **stack, int data);
 void		stkpush_parsing(t_stack **stack, t_stack *new_node);
@@ -40,8 +38,6 @@ void		ft_stkclear(t_stack **stack);
 
 //utils3
 void		ft_putstr_fd(char *s, int fd);
-t_stack		*decimal_to_binary(t_stack **stack_a);
-int			dec_to_bin_convert(int decimal_val);
 int			is_sorted(t_stack **stack);
 void		ft_error(t_stack **stack_a, t_stack **stack_b);
 
@@ -71,7 +67,7 @@ t_stack		*ptr_to_minimum(t_stack *stack);
 t_stack		*normalize(t_stack *stack_a);
 
 //radix_sort
-int			get_max_value(t_stack **stack_a);
+//int			get_max_value(t_stack **stack_a);
 t_stack		*radix_sort(t_stack **stack_a, t_stack **stack_b);
 
 //utils_split
