@@ -1,4 +1,4 @@
-HEADIR = includes
+HEADER = includes
 
 SRC = main.c commands_final.c algo_choice.c \
 	normalize.c parsing.c radix_sort.c \
@@ -14,14 +14,14 @@ CC = gcc
 
 RM = rm -f
 
-CFLAGS = -Werror -Wall -Wextra -I${HEADIR}
+CFLAGS = -Werror -Wall -Wextra -I${HEADER}
 
 %.o : %.c
 		${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
 $(NAME) : $(OBJ)
 		$(CC) $^ -o $(NAME)
-
+		
 all : $(NAME)
 
 clean :

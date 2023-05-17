@@ -17,7 +17,7 @@ t_stack		*ptr_to_maximum(t_stack *stack)
 {
 	t_stack		*temp;
 	t_stack		*max_ptr;
-	int			max_value;
+	long		max_value;
 
 	temp = stack;
 	max_value = (stack)->data;
@@ -37,9 +37,9 @@ t_stack		*ptr_to_maximum(t_stack *stack)
 // retourne un pointeur qui pointe sur la valeur min
 t_stack	*ptr_to_minimum(t_stack *stack)
 {
-	t_stack	*temp;
-	t_stack	*min_ptr;
-	int		min_value;
+	t_stack		*temp;
+	t_stack		*min_ptr;
+	long		min_value;
 
 	temp = stack;
 	min_value = stack->data;
@@ -80,7 +80,7 @@ t_stack		*normalize(t_stack *stack_a)
 	while (i < size)
 	{
 		min = ptr_to_minimum(stack_a);
-		min->data = (INT_MAX - 1 - i);
+		min->data = (INT_MAX - (1 + i));
 		i++;
 	}
 	i = 0;
