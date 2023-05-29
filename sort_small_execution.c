@@ -1,38 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checking.c                                         :+:      :+:    :+:   */
+/*   sort_small_execution.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ndecotti <ndecotti@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/14 13:14:40 by ndecotti          #+#    #+#             */
-/*   Updated: 2023/05/24 15:25:12 by ndecotti         ###   ########.fr       */
+/*   Created: 2023/05/23 16:13:18 by ndecotti          #+#    #+#             */
+/*   Updated: 2023/05/23 16:16:25 by ndecotti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-// print stacks
-/*
-void	db_show_stack(t_stack **stack_a, t_stack **stack_b)
+void	execute_move(t_stack **stack)
 {
-	t_stack	*tmp;
-
-	printf("--- Stack A ---\n");
-	tmp = *stack_a;
-	while (tmp)
-	{
-		printf("- %d\n", ft_stkpeek(tmp));
-		tmp = tmp->next;
-	}
-	printf("--- Stack B ---\n");
-	tmp = *stack_b;
-	while (tmp)
-	{
-		printf("- %d\n", ft_stkpeek(tmp));
-		tmp = tmp->next;
-	}
-	printf("\n");
-	free(tmp);
+	swap_a(stack);
+	reverse_rotate_a(stack);
 }
-*/
+
+void	execute_move2(t_stack **stack)
+{
+	swap_a(stack);
+	rotate_a(stack);
+}
+
+void	execute_move3(t_stack **stack_a)
+{
+	swap_a(stack_a);
+	rotate_a(stack_a);
+	swap_a(stack_a);
+	reverse_rotate_a(stack_a);
+}
+
+void	execute_move4(t_stack **stack_a)
+{
+	reverse_rotate_a(stack_a);
+	swap_a(stack_a);
+	rotate_a(stack_a);
+	rotate_a(stack_a);
+}
